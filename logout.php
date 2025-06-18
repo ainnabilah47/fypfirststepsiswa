@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$redirect = 'index.php';
+$redirect = 'login.php';
 if (isset($_SESSION['user_role'])) {
     switch ($_SESSION['user_role']) {
         case 'pelajar':

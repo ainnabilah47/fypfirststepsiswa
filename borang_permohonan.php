@@ -85,7 +85,8 @@ $support_doc_path = $draft['fld_supporting_doc'] ?? '';
       position: relative;
       z-index: 1;
       background: white; /* keep the white card */
-
+      min-height: 400px; /* Ensures the container has a minimum height */
+      box-sizing: border-box; /* Ensure padding is included in the height calculation */
     }
     a[href*="panduan_permohonan.php"]:hover {
       background-color: #138496;
@@ -122,76 +123,59 @@ $support_doc_path = $draft['fld_supporting_doc'] ?? '';
 <body>
 
 <?php include 'nav_bar.php'; ?>
-
 <div class="container">
   <div class="form-container">
-
-  <!-- Notifikasi mesej berjaya atau ralat -->
-  <?php if (isset($_SESSION['success_msg'])): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <?= $_SESSION['success_msg']; unset($_SESSION['success_msg']); ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-    </div>
-  <?php endif; ?>
-
-  <?php if (isset($_SESSION['error_msg'])): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <?= $_SESSION['error_msg']; unset($_SESSION['error_msg']); ?>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-    </div>
-  <?php endif; ?>
-
-<div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
-    <h2 class="mb-0" style="font-weight: bold;">Borang Permohonan Bantuan</h2>
-
-    <?php if ($hasSubmitted): ?>
-      <div style="display: flex; gap: 5px;">
-      <a href="lihat_permohonan.php" class="btn btn-info btn-sm">Lihat</a>
-      <a href="edit_permohonan.php" class="btn btn-warning btn-sm">Ubah</a>
-    <?php endif; ?>
-  </div>
-</div>
-
-    <p><i>Sila lengkapkan maklumat berikut untuk memohon.</i></p>
-    <h3 class="text-primary mt-4">Maklumat Pelajar</h3>
-
     <form action="proses_permohonan.php" method="POST" enctype="multipart/form-data">
+      <!-- Notifikasi mesej berjaya atau ralat -->
+      <?php if (isset($_SESSION['success_msg'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <?= $_SESSION['success_msg']; unset($_SESSION['success_msg']); ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+        </div>
+      <?php endif; ?>
+
+      <?php if (isset($_SESSION['error_msg'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <?= $_SESSION['error_msg']; unset($_SESSION['error_msg']); ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+        </div>
+      <?php endif; ?>
+
+      <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
+        <h2 class="mb-0" style="font-weight: bold;">Borang Permohonan Bantuan</h2>
+
+        <?php if ($hasSubmitted): ?>
+          <div style="display: flex; gap: 5px;">
+            <a href="lihat_permohonan.php" class="btn btn-info btn-sm">Lihat</a>
+            <a href="edit_permohonan.php" class="btn btn-warning btn-sm">Ubah</a>
+          </div>
+        <?php endif; ?>
+      </div>
+
+      <p><i>Sila lengkapkan maklumat berikut untuk memohon.</i></p>
+      <h3 class="text-primary mt-4">Maklumat Pelajar</h3>
+
       <input type="hidden" name="fld_user_id" value="<?php echo $student_id; ?>">
 
       <div class="form-group">
-  <label>Nama:</label>
-  <input type="text" name="fld_name" class="form-control" required
-         maxlength="300"
-         pattern="^(\b\w+\b[\s\r\n]*){1,50}$"
-         placeholder="Contoh: Nor Amalia Binti Nor Bani"
-         value="<?= htmlspecialchars($name) ?>">
-</div>
+        <label>Nama:</label>
+        <input type="text" name="fld_name" class="form-control" required maxlength="300" pattern="^(\b\w+\b[\s\r\n]*){1,50}$" placeholder="Contoh: Nor Amalia Binti Nor Bani" value="<?= htmlspecialchars($name) ?>">
+      </div>
 
-<div class="form-group">
-  <label>No Matrik:</label>
-  <input type="text" name="fld_matric_no" class="form-control" required
-         pattern="^A\d{6}$"
-         placeholder="Contoh: A123456"
-         value="<?= htmlspecialchars($matric_no) ?>">
-</div>
+      <div class="form-group">
+        <label>No Matrik:</label>
+        <input type="text" name="fld_matric_no" class="form-control" required pattern="^A\d{6}$" placeholder="Contoh: A123456" value="<?= htmlspecialchars($matric_no) ?>">
+      </div>
 
-<div class="form-group">
-  <label>No Telefon:</label>
-  <input type="text" name="fld_phone" class="form-control" required
-       pattern="^01\d{8,9}$"
-       placeholder="Contoh: 01123345672"
-       maxlength="11"
-       inputmode="numeric"
-       value="<?= htmlspecialchars($phone) ?>">
-</div>
+      <div class="form-group">
+        <label>No Telefon:</label>
+        <input type="text" name="fld_phone" class="form-control" required pattern="^01\d{8,9}$" placeholder="Contoh: 01123345672" maxlength="11" inputmode="numeric" value="<?= htmlspecialchars($phone) ?>">
+      </div>
 
-<div class="form-group">
-  <label>Email:</label>
-  <input type="email" name="fld_email" class="form-control" required
-         pattern="^[a-zA-Z0-9._%+-]+@siswa\.ukm\.edu\.my$"
-         placeholder="Contoh: nomatrik@siswa.ukm.edu.my"
-         value="<?= htmlspecialchars($email) ?>">
-</div>
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="email" name="fld_email" class="form-control" required pattern="^[a-zA-Z0-9._%+-]+@siswa\.ukm\.edu\.my$" placeholder="Contoh: nomatrik@siswa.ukm.edu.my" value="<?= htmlspecialchars($email) ?>">
+      </div>
 
       <div class="form-group">
         <label>Jenis Bantuan:</label>
@@ -199,8 +183,8 @@ $support_doc_path = $draft['fld_supporting_doc'] ?? '';
           <option value="" disabled selected>-- Pilih Bantuan --</option>
           <option value="Peralatan Digital" <?php if($category == "Peralatan Digital") echo "selected"; ?>>Peralatan Digital</option>
           <option value="Bahan Pembelajaran" <?php if($category == "Bahan Pembelajaran") echo "selected"; ?>>Bahan Pembelajaran</option>
-          <option value="Keperluan Diri" <?php if($category == "Keperluan diri") echo "selected"; ?>>Keperluan Diri</option>
-          <option value="Peralatan Digital + Bahan Pembelajaran" <?php if($category == "Peralatan digital + Bahan Pembelajaran") echo "selected"; ?>>Peralatan Digital + Bahan Pembelajaran</option>
+          <option value="Keperluan Diri" <?php if($category == "Keperluan Diri") echo "selected"; ?>>Keperluan Diri</option>
+          <option value="Peralatan Digital + Bahan Pembelajaran" <?php if($category == "Peralatan Digital + Bahan Pembelajaran") echo "selected"; ?>>Peralatan Digital + Bahan Pembelajaran</option>
           <option value="Bahan Pembelajaran + Keperluan Diri" <?php if($category == "Bahan Pembelajaran + Keperluan Diri") echo "selected"; ?>>Bahan Pembelajaran + Keperluan Diri</option>
           <option value="Peralatan Digital + Keperluan Diri" <?php if($category == "Peralatan Digital + Keperluan Diri") echo "selected"; ?>>Peralatan Digital + Keperluan Diri</option>
           <option value="Peralatan Digital + Bahan Pembelajaran + Keperluan Diri" <?php if($category == "Peralatan Digital + Bahan Pembelajaran + Keperluan Diri") echo "selected"; ?>>Peralatan Digital + Bahan Pembelajaran + Keperluan Diri</option>
@@ -208,40 +192,36 @@ $support_doc_path = $draft['fld_supporting_doc'] ?? '';
       </div>
 
       <div class="form-group">
-  <label>Slip Pendapatan (PDF sahaja):</label>
- <?php if (!empty($income_slip_path)): ?>
-  <p>
-    <a href="<?= $income_slip_path ?>" target="_blank">📎 Sudah dimuat naik (Lihat)</a>
-    <a href="remove_draft_file.php?type=income" style="color:red; font-weight:bold; margin-left:10px;">❌ Buang</a>
-  </p>
-<?php endif; ?>
-  <input type="file" name="fld_income_slip" class="form-control-file" accept=".pdf"
-    <?= empty($income_slip_path) ? 'required' : '' ?>>
-</div>
+        <label>Slip Pendapatan (PDF sahaja):</label>
+        <?php if (!empty($income_slip_path)): ?>
+          <p>
+            <a href="<?= $income_slip_path ?>" target="_blank">📎 Sudah dimuat naik (Lihat)</a>
+            <a href="remove_draft_file.php?type=income" style="color:red; font-weight:bold; margin-left:10px;">❌ Buang</a>
+          </p>
+        <?php endif; ?>
+        <input type="file" name="fld_income_slip" class="form-control-file" accept=".pdf" <?= empty($income_slip_path) ? 'required' : '' ?>>
+      </div>
 
-<div class="form-group">
-  <label>Dokumen Sokongan (PDF sahaja):</label>
- <?php if (!empty($support_doc_path)): ?>
-  <p>
-    <a href="<?= $support_doc_path ?>" target="_blank">📎 Sudah dimuat naik (Lihat)</a>
-    <a href="remove_draft_file.php?type=support" style="color:red; font-weight:bold; margin-left:10px;">❌ Buang</a>
-  </p>
-<?php endif; ?>
-  <input type="file" name="fld_supporting_doc" class="form-control-file" accept=".pdf"
-    <?= empty($support_doc_path) ? 'required' : '' ?>>
-</div>
+      <div class="form-group">
+        <label>Dokumen Sokongan (PDF sahaja):</label>
+        <?php if (!empty($support_doc_path)): ?>
+          <p>
+            <a href="<?= $support_doc_path ?>" target="_blank">📎 Sudah dimuat naik (Lihat)</a>
+            <a href="remove_draft_file.php?type=support" style="color:red; font-weight:bold; margin-left:10px;">❌ Buang</a>
+          </p>
+        <?php endif; ?>
+        <input type="file" name="fld_supporting_doc" class="form-control-file" accept=".pdf" <?= empty($support_doc_path) ? 'required' : '' ?>>
+      </div>
 
-          <div class="form-group d-flex justify-content-between align-items-center">
-      <div>
-        <div class="form-group d-flex justify-content-between align-items-center">
-  <div>
-    <button type="submit" name="save_draft" class="btn btn-primary">Simpan Draf</button>
-
-    <button type="submit" name="submit" class="btn btn-success"
-      <?= $hasSubmitted ? 'disabled' : '' ?>>
-      Hantar Permohonan
-    </button>
+      <div class="form-group d-flex justify-content-between align-items-center">
+        <div>
+          <button type="submit" name="save_draft" class="btn btn-primary">Simpan Draf</button>
+          <button type="submit" name="submit" class="btn btn-success" <?= $hasSubmitted ? 'disabled' : '' ?>>Hantar Permohonan</button>
+        </div>
+      </div>
+    </form>
   </div>
+</div>
 
 <script>
 const MAX_FILE_SIZE_MB = 2;
@@ -283,6 +263,7 @@ document.querySelector('form').addEventListener('submit', function(e) {
   }
 });
 </script>
+
 
 <a href="panduan_permohonan.php" target="_blank"
    style="position: fixed; bottom: 25px; right: 25px; z-index: 9999;
